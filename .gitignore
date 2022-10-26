@@ -1,3 +1,12 @@
+# Dependencies
+dependencies/*
+dependencies/pugixml
+!dependencies/BuildDependencies.py
+
+# CLion
+.idea/
+cmake-build-debug/
+
 # Prerequisites
 *.d
 
