@@ -37,6 +37,7 @@ int Vex::start(int argc, char** argv) {
     }
 
     // Start the application
+    m_app->start();
 
     // Free memory
     delete m_app;

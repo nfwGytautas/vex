@@ -16,4 +16,8 @@ endif ()
 target_include_directories(vex PUBLIC ${PROJECT_SOURCE_DIR}/dependencies/include/)
 target_link_directories(vex PUBLIC ${PROJECT_SOURCE_DIR}/dependencies/lib/x64/)
 
-target_link_libraries(vex PUBLIC pugixml)
+target_link_libraries(vex PUBLIC pugixml spdlog glfw3)
+
+if (UNIX)
+    target_link_libraries(vex PUBLIC dl pthread)
+endif (UNIX)

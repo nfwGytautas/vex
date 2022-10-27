@@ -8,16 +8,23 @@
 
 #include <string>
 
+#include "vex/rendering/GfxWindow.h"
+
 namespace vex {
 namespace ui {
 
 /**
  * @brief Window is used to define a GUI window
  */
-class Window final {
+class Window final : public rendering::GfxWindow {
 public:
     Window() = default;
     ~Window() = default;
+
+    /**
+     * Create the window
+     */
+    void create() override;
 
     /**
      * Sets the title of the window

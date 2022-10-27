@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "Window.h"
+#include "vex/rendering/WindowManager.h"
 
 namespace vex {
 namespace ui {
@@ -22,12 +23,26 @@ public:
     ~Application();
 
     /**
+     * Start the application
+     */
+    void start();
+
+    /**
      * Add a window to the application
      * @param pWindow Window pointer
      */
     void addWindow(vex::ui::Window* pWindow);
 
 private:
+    /**
+     * Shutdown the application
+     */
+    void shutdown();
+
+private:
+    rendering::WindowManager m_windowManager;
+
+    bool m_shutdown = false;
     std::vector<Window*> m_windows;
 };
 
