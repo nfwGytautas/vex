@@ -29,6 +29,11 @@ public:
      */
     virtual void destroy();
 
+    /**
+     * Returns the native OS window handle
+     */
+    void* getNativeHandle();
+
 protected:
     /**
      * Returns true if the window is created, false otherwise

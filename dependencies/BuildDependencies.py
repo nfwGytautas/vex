@@ -12,26 +12,29 @@ import glob
 libDir = "lib/x64/"
 includeDir = "include/"
 
+# Library list
+# ( name, [includes], override for the library file )
+libraries = [
+    ("pugixml", ["src/pugixml.hpp", "src/pugiconfig.hpp"], ["libpugixml.a"]),
+    ("spdlog", ["include/spdlog/**"], ["libspdlog.a"]),
+    ("glfw", ["include/GLFW/**"], ["src/libglfw3.a"]),
+]
+
 # Generate the output folders
 print("Generating output directories")
 Path(libDir).mkdir(parents=True, exist_ok=True)
 Path(includeDir).mkdir(parents=True, exist_ok=True)
 
-libraryCount = 3
+libraryCount = len(libraries)
 
 
 # Compile cmake type dependency
-def compile_cmake(index, lib_name, include_files, output_lib_override=None):
+def compile_cmake(index, lib_name, include_files, output_libs):
     # TODO: Check that library directory exists
     # TODO: Error check
 
     print("\n")
     print(colored("{} {}/{}".format(lib_name, index, libraryCount), "green"))
-
-    if output_lib_override is None:
-        output_file = "lib{}.a".format(lib_name)
-    else:
-        output_file = "{}.a".format(output_lib_override)
 
     lib_dir = "{}/{}".format(os.getcwd(), lib_name)
     build_path = "{}/build/".format(lib_dir)
@@ -51,7 +54,8 @@ def compile_cmake(index, lib_name, include_files, output_lib_override=None):
     # Copy over necessary files
     Path(include_path).mkdir(parents=True, exist_ok=True)
 
-    shutil.copy("{}{}".format(build_path, output_file), libDir)
+    for lib in output_libs:
+        shutil.copy("{}{}".format(build_path, lib), libDir)
 
     for include_file in include_files:
         if "*" in include_file:
@@ -65,8 +69,7 @@ def compile_cmake(index, lib_name, include_files, output_lib_override=None):
 
 
 # Compile libraries
-compile_cmake(1, "pugixml", ["src/pugixml.hpp", "src/pugiconfig.hpp"])
-compile_cmake(2, "spdlog", ["include/spdlog/**"])
-compile_cmake(3, "glfw", ["include/GLFW/**"], output_lib_override="src/libglfw3")
+for i, entry in enumerate(libraries):
+    compile_cmake(i + 1, entry[0], entry[1], entry[2])
 
 print("\n")

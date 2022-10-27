@@ -6,6 +6,9 @@
 
 #include "Application.h"
 
+#include "vex/rendering/Renderer.h"
+#include "vex/rendering/WindowManager.h"
+
 namespace vex {
 namespace ui {
 
@@ -16,24 +19,17 @@ void Application::addWindow(vex::ui::Window* pWindow) {
 }
 
 void Application::start() {
-    // Setup systems
-    if (!m_windowManager.initialize()) {
-        return;
-    }
-
     // Setup windows
     for (Window* window : m_windows) {
         window->create();
     }
 
     while (!m_shutdown) {
-        m_windowManager.pollEvents();
+        rendering::WindowManager::getInstance().pollEvents();
+        rendering::Renderer::getInstance().commit();
     }
 
     shutdown();
-
-    // Shutdown systems
-    m_windowManager.shutdown();
 }
 
 void Application::shutdown() {

@@ -37,6 +37,16 @@ private:
      */
     bool parseCmdArguments(int argc, char** argv);
 
+    /**
+     * Initialize rendering system
+     */
+    void initializeRendering();
+
+    /**
+     * Shutdown rendering system
+     */
+    void shutdownRendering();
+
 private:
     std::filesystem::path m_projectRoot;
     ui::Application* m_app = nullptr;

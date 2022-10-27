@@ -6,6 +6,9 @@
 
 #include "GfxWindow.h"
 
+#define GLFW_EXPOSE_NATIVE_X11
+#include <glfw/glfw3native.h>
+
 namespace vex {
 namespace rendering {
 
@@ -27,6 +30,10 @@ void GfxWindow::destroy() {
 
 bool GfxWindow::isCreated() const {
     return m_window != nullptr;
+}
+
+void* GfxWindow::getNativeHandle() {
+    return reinterpret_cast<void*>(glfwGetX11Window(m_window));
 }
 
 } // namespace rendering

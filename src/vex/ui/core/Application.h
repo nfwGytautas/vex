@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "Window.h"
-#include "vex/rendering/WindowManager.h"
 
 namespace vex {
 namespace ui {
@@ -40,8 +39,6 @@ private:
     void shutdown();
 
 private:
-    rendering::WindowManager m_windowManager;
-
     bool m_shutdown = false;
     std::vector<Window*> m_windows;
 };

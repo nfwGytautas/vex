@@ -7,6 +7,8 @@ include_directories(src)
 
 file(GLOB_RECURSE CPP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
+add_compile_options(-no-pie)
+
 add_executable(vex ${CPP_SOURCE_FILES})
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)

@@ -8,6 +8,9 @@
 
 #include <glfw/glfw3.h>
 
+#define GLFW_EXPOSE_NATIVE_X11
+#include <glfw/glfw3native.h>
+
 #include "vex/utility/Logger.h"
 
 namespace vex {
@@ -25,8 +28,12 @@ bool WindowManager::initialize() {
         return false;
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    // Let bgfx take care of it
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+    // Create default window
+    m_defaultWindow = new GfxWindow();
+    m_defaultWindow->create();
 
     return true;
 }
@@ -34,11 +41,27 @@ bool WindowManager::initialize() {
 void WindowManager::shutdown() {
     LOG_TRACE("Window manager shutting down");
 
+    m_defaultWindow->destroy();
+    delete m_defaultWindow;
+
     glfwTerminate();
 }
 
 void WindowManager::pollEvents() {
     glfwPollEvents();
+}
+
+WindowManager& WindowManager::getInstance() {
+    static WindowManager manager;
+    return manager;
+}
+
+void* WindowManager::getNativeDisplayHandle() const {
+    return glfwGetX11Display();
+}
+
+GfxWindow* WindowManager::getDefaultWindow() {
+    return m_defaultWindow;
 }
 
 } // namespace rendering

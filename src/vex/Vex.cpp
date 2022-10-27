@@ -6,6 +6,8 @@
 
 #include "Vex.h"
 
+#include "vex/rendering/Renderer.h"
+#include "vex/rendering/WindowManager.h"
 #include "vex/ui/LayoutParser.h"
 #include "vex/utility/Logger.h"
 
@@ -29,18 +31,27 @@ int Vex::start(int argc, char** argv) {
         return 0x1;
     }
 
-    // Parse ui and begin vex application
-    LayoutParser parser(m_projectRoot);
-    if (!parser.parse(m_app)) {
-        LOG_ERROR("Failed to parse Init.xml");
-        return 0x2;
+    // Initialize rendering
+    initializeRendering();
+
+    {
+        // Parse ui and begin vex application
+        LayoutParser parser(m_projectRoot);
+        if (!parser.parse(m_app)) {
+            LOG_ERROR("Failed to parse Init.xml");
+            return 0x2;
+        }
+
+        // Start the application
+        m_app->start();
+
+        // Free memory
+        delete m_app;
     }
 
-    // Start the application
-    m_app->start();
+    // Shutdown rendering
+    shutdownRendering();
 
-    // Free memory
-    delete m_app;
     return 0;
 }
 bool Vex::parseCmdArguments(int argc, char** argv) {
@@ -58,6 +69,16 @@ bool Vex::parseCmdArguments(int argc, char** argv) {
     }
 
     return true;
+}
+
+void Vex::initializeRendering() {
+    rendering::WindowManager::getInstance().initialize();
+    rendering::Renderer::getInstance().initialize();
+}
+
+void Vex::shutdownRendering() {
+    rendering::Renderer::getInstance().shutdown();
+    rendering::WindowManager::getInstance().shutdown();
 }
 
 } // namespace vex
