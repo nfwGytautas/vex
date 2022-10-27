@@ -10,23 +10,21 @@
 #include <pugixml/pugixml.hpp>
 
 #include "vex/Macros.h"
+#include "vex/ui/common/Color.h"
 #include "vex/utility/Logger.h"
 
 namespace vex {
 
 LayoutParser::LayoutParser(std::filesystem::path projectRoot) : m_root(std::move(projectRoot)) {}
 
-bool LayoutParser::parse(ui::Application*& pApplication) {
-    VEX_DYNAMIC_ASSERT(pApplication == nullptr, "pApplication must be nullptr");
-
+bool LayoutParser::parse(ui::Application* pApplication) {
     // Create application object
-    m_app = new ui::Application();
+    m_app = pApplication;
 
     if (!parseXmlFile(m_root / "Init.xml")) {
         onFail();
     }
 
-    pApplication = m_app;
     return true;
 }
 
@@ -75,9 +73,14 @@ ui::Window* LayoutParser::parseWindowNode(const LayoutParser::XmlNode& node) {
 
     // Attributes
     const auto& title = node.attribute("title");
+    const auto& bgColor = node.attribute("bgColor");
 
     if (!title.empty()) {
         window->setTitle(title.value());
+    }
+
+    if (!bgColor.empty()) {
+        window->setBackgroundColor(ui::Color::fromString(bgColor.value()));
     }
 
     return window;

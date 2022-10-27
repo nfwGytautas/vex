@@ -2,13 +2,13 @@
 
 <Application>
     <Windows>
-        <Window title="Window 1">
+        <Window title="Window 1" bgColor="RGB(128, 0, 0)">
             <FreeLayout>
             </FreeLayout>
         </Window>
 
         <!-- Here we define a second window -->
-        <Window title="Window 2">
+        <Window title="Window 2" bgColor="RGB(0, 128, 0)">
             <FreeLayout>
             </FreeLayout>
         </Window>

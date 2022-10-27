@@ -8,6 +8,8 @@
 
 #include <filesystem>
 
+#include <efsw/efsw.hpp>
+
 #include "vex/ui/core/Application.h"
 
 namespace vex {
@@ -15,7 +17,7 @@ namespace vex {
 /**
  * @brief The entry point class for Vex
  */
-class Vex final {
+class Vex final : public efsw::FileWatchListener {
 public:
     Vex() = default;
     ~Vex() = default;
@@ -47,9 +49,16 @@ private:
      */
     void shutdownRendering();
 
+    /**
+     * efsw callback for file watcher
+     */
+    void handleFileAction(efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action,
+                          std::string oldFilename) override;
+
 private:
     std::filesystem::path m_projectRoot;
     ui::Application* m_app = nullptr;
+    efsw::FileWatcher m_projectWatcher;
 };
 
 } // namespace vex

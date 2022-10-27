@@ -5,6 +5,7 @@
  */
 
 #include "Vex.h"
+#include <iostream>
 
 #include "vex/rendering/Renderer.h"
 #include "vex/rendering/WindowManager.h"
@@ -34,20 +35,20 @@ int Vex::start(int argc, char** argv) {
     // Initialize rendering
     initializeRendering();
 
-    {
-        // Parse ui and begin vex application
-        LayoutParser parser(m_projectRoot);
-        if (!parser.parse(m_app)) {
-            LOG_ERROR("Failed to parse Init.xml");
-            return 0x2;
-        }
+    // Setup watcher
+    efsw::WatchID watchId = m_projectWatcher.addWatch(m_projectRoot, this, true);
 
-        // Start the application
-        m_app->start();
+    // Start watching
+    m_projectWatcher.watch();
 
-        // Free memory
-        delete m_app;
-    }
+    m_app = new ui::Application(m_projectRoot);
+    m_app->load();
+
+    // Start the application
+    m_app->start();
+
+    // Free memory
+    delete m_app;
 
     // Shutdown rendering
     shutdownRendering();
@@ -79,6 +80,11 @@ void Vex::initializeRendering() {
 void Vex::shutdownRendering() {
     rendering::Renderer::getInstance().shutdown();
     rendering::WindowManager::getInstance().shutdown();
+}
+void Vex::handleFileAction(efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action,
+                           std::string oldFilename) {
+    // Reload
+    m_app->markForReload();
 }
 
 } // namespace vex

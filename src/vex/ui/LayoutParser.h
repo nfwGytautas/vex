@@ -32,7 +32,7 @@ public:
      * @param pApplication nullptr application object to store information in
      * @return true if parsed without errors, false otherwise
      */
-    bool parse(vex::ui::Application*& pApplication);
+    bool parse(vex::ui::Application* pApplication);
 
 private:
     /**

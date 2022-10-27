@@ -18,7 +18,7 @@ add_definitions(-DGLFW_INCLUDE_NONE)
 target_include_directories(vex PUBLIC ${PROJECT_SOURCE_DIR}/dependencies/include/)
 target_link_directories(vex PUBLIC ${PROJECT_SOURCE_DIR}/dependencies/lib/x64/)
 
-target_link_libraries(vex PUBLIC pugixml spdlog glfw3 glad)
+target_link_libraries(vex PUBLIC pugixml spdlog glfw3 glad efsw)
 
 if (UNIX)
     target_link_libraries(vex PUBLIC dl pthread)

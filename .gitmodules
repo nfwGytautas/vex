@@ -10,3 +10,6 @@
 [submodule "dependencies/vex-glad"]
 	path = dependencies/vex-glad
 	url = https://github.com/nfwGytautas/vex-glad
+[submodule "dependencies/efsw"]
+	path = dependencies/efsw
+	url = https://github.com/SpartanJ/efsw

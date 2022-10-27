@@ -27,8 +27,12 @@ void Window::create() {
 }
 
 void Window::render() {
-    glClearColor(0.5, 0.0, 0.0, 1.0);
+    glClearColor(m_bgColor.R, m_bgColor.G, m_bgColor.B, m_bgColor.A);
     glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Window::setBackgroundColor(vex::ui::Color color) {
+    m_bgColor = color;
 }
 
 } // namespace ui

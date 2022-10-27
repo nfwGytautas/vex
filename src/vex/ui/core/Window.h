@@ -9,6 +9,7 @@
 #include <string>
 
 #include "vex/rendering/GfxWindow.h"
+#include "vex/ui/common/Color.h"
 
 namespace vex {
 namespace ui {
@@ -37,8 +38,15 @@ public:
      */
     void render();
 
+    /**
+     * Set the background color of the window
+     * @param color Color of the window background
+     */
+    void setBackgroundColor(vex::ui::Color color);
+
 private:
     std::string m_title;
+    ui::Color m_bgColor {};
 };
 
 } // namespace ui

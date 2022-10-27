@@ -36,6 +36,13 @@ libraries = [
         "LibFiles": ["libglad.a"],
         "IncludeOutputOverride": ""
     },
+    {
+        "Name": "efsw",
+        "IncludeFiles": ["include/**"],
+        "LibFiles": ["libefsw.a"],
+        "IncludeOutputOverride": "",
+        "CmakeOptions": "-DBUILD_SHARED_LIBS=OFF"
+    },
 ]
 
 # Generate the output folders
@@ -67,7 +74,11 @@ def compile_cmake(index, lib_entry):
     Path(build_path).mkdir(parents=True, exist_ok=True)
 
     print("Generating cmake")
-    cmake = subprocess.Popen(["cmake", ".."], cwd=build_path)
+    cmake_options = ""
+    if "CmakeOptions" in lib_entry:
+        cmake_options = lib_entry["CmakeOptions"]
+
+    cmake = subprocess.Popen(["cmake", cmake_options, ".."], cwd=build_path)
     cmake.wait()
 
     print("Compiling")
