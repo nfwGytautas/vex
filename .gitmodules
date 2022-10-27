@@ -7,6 +7,6 @@
 [submodule "dependencies/glfw"]
 	path = dependencies/glfw
 	url = https://github.com/glfw/glfw
-[submodule "dependencies/bgfx.cmake"]
-	path = dependencies/bgfx.cmake
-	url = https://github.com/bkaradzic/bgfx.cmake.git
+[submodule "dependencies/vex-glad"]
+	path = dependencies/vex-glad
+	url = https://github.com/nfwGytautas/vex-glad

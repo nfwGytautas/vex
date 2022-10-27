@@ -6,14 +6,21 @@
 
 #include "GfxWindow.h"
 
-#define GLFW_EXPOSE_NATIVE_X11
-#include <glfw/glfw3native.h>
+#include <glad/glad.h>
+#include <glfw/glfw3.h>
+
+#include "vex/utility/Logger.h"
 
 namespace vex {
 namespace rendering {
 
 void GfxWindow::create() {
     m_window = glfwCreateWindow(48, 48, "GfxWindow", NULL, NULL);
+
+    glfwMakeContextCurrent(m_window);
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+        LOG_ERROR("Failed to load glad for window");
+    }
 
     if (!m_window) {
         // TODO: Error handling
@@ -32,8 +39,12 @@ bool GfxWindow::isCreated() const {
     return m_window != nullptr;
 }
 
-void* GfxWindow::getNativeHandle() {
-    return reinterpret_cast<void*>(glfwGetX11Window(m_window));
+void GfxWindow::swapBuffers() {
+    glfwSwapBuffers(m_window);
+}
+
+void GfxWindow::makeCurrent() {
+    glfwMakeContextCurrent(m_window);
 }
 
 } // namespace rendering

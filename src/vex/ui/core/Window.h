@@ -32,6 +32,11 @@ public:
      */
     void setTitle(const std::string& title);
 
+    /**
+     * Renders the contents of this window
+     */
+    void render();
+
 private:
     std::string m_title;
 };

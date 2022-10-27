@@ -15,9 +15,27 @@ includeDir = "include/"
 # Library list
 # ( name, [includes], override for the library file )
 libraries = [
-    ("pugixml", ["src/pugixml.hpp", "src/pugiconfig.hpp"], ["libpugixml.a"]),
-    ("spdlog", ["include/spdlog/**"], ["libspdlog.a"]),
-    ("glfw", ["include/GLFW/**"], ["src/libglfw3.a"]),
+    {
+        "Name": "pugixml",
+        "IncludeFiles": ["src/pugixml.hpp", "src/pugiconfig.hpp"],
+        "LibFiles": ["libpugixml.a"],
+    },
+    {
+        "Name": "spdlog",
+        "IncludeFiles": ["include/spdlog/**"],
+        "LibFiles": ["libspdlog.a"],
+    },
+    {
+        "Name": "glfw",
+        "IncludeFiles": ["include/GLFW/**"],
+        "LibFiles": ["src/libglfw3.a"],
+    },
+    {
+        "Name": "vex-glad",
+        "IncludeFiles": ["glad/include/**"],
+        "LibFiles": ["libglad.a"],
+        "IncludeOutputOverride": ""
+    },
 ]
 
 # Generate the output folders
@@ -29,16 +47,21 @@ libraryCount = len(libraries)
 
 
 # Compile cmake type dependency
-def compile_cmake(index, lib_name, include_files, output_libs):
+def compile_cmake(index, lib_entry):
     # TODO: Check that library directory exists
     # TODO: Error check
 
     print("\n")
-    print(colored("{} {}/{}".format(lib_name, index, libraryCount), "green"))
+    print(colored("{} {}/{}".format(lib_entry["Name"], index, libraryCount), "green"))
 
-    lib_dir = "{}/{}".format(os.getcwd(), lib_name)
+    lib_dir = "{}/{}".format(os.getcwd(), lib_entry["Name"])
     build_path = "{}/build/".format(lib_dir)
-    include_path = "{}{}/".format(includeDir, lib_name)
+
+    if "IncludeOutputOverride" in lib_entry:
+        include_path = "{}{}/".format(includeDir, lib_entry["IncludeOutputOverride"])
+    else:
+        include_path = "{}{}/".format(includeDir, lib_entry["Name"])
+
     print("Build path:", build_path)
 
     Path(build_path).mkdir(parents=True, exist_ok=True)
@@ -54,10 +77,10 @@ def compile_cmake(index, lib_name, include_files, output_libs):
     # Copy over necessary files
     Path(include_path).mkdir(parents=True, exist_ok=True)
 
-    for lib in output_libs:
+    for lib in lib_entry["LibFiles"]:
         shutil.copy("{}{}".format(build_path, lib), libDir)
 
-    for include_file in include_files:
+    for include_file in lib_entry["IncludeFiles"]:
         if "*" in include_file:
             for file in glob.glob("{}/{}".format(lib_dir, include_file)):
                 if Path(file).is_dir():
@@ -70,6 +93,6 @@ def compile_cmake(index, lib_name, include_files, output_libs):
 
 # Compile libraries
 for i, entry in enumerate(libraries):
-    compile_cmake(i + 1, entry[0], entry[1], entry[2])
+    compile_cmake(i + 1, entry)
 
 print("\n")

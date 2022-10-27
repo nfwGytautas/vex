@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Application>
+    <Windows>
+        <Window title="Window 1">
+            <FreeLayout>
+            </FreeLayout>
+        </Window>
+
+        <!-- Here we define a second window -->
+        <Window title="Window 2">
+            <FreeLayout>
+            </FreeLayout>
+        </Window>
+    </Windows>
+</Application>

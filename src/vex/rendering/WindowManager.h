@@ -41,19 +41,7 @@ public:
      */
     void pollEvents();
 
-    /**
-     * Returns the native display handle only really needed for linux
-     * @return X11 or Wayland display for Linux, NULL for every other platform
-     */
-    [[nodiscard]] void* getNativeDisplayHandle() const;
-
-    /**
-     * Get the default window of Vex applications
-     */
-    GfxWindow* getDefaultWindow();
-
 private:
-    GfxWindow* m_defaultWindow = nullptr;
 };
 
 } // namespace rendering

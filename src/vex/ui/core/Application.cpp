@@ -26,6 +26,13 @@ void Application::start() {
 
     while (!m_shutdown) {
         rendering::WindowManager::getInstance().pollEvents();
+
+        for (Window* window : m_windows) {
+            window->makeCurrent();
+            window->render();
+            window->swapBuffers();
+        }
+
         rendering::Renderer::getInstance().commit();
     }
 

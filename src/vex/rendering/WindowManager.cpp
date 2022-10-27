@@ -6,10 +6,8 @@
 
 #include "WindowManager.h"
 
+#include <glad/glad.h>
 #include <glfw/glfw3.h>
-
-#define GLFW_EXPOSE_NATIVE_X11
-#include <glfw/glfw3native.h>
 
 #include "vex/utility/Logger.h"
 
@@ -28,21 +26,15 @@ bool WindowManager::initialize() {
         return false;
     }
 
-    // Let bgfx take care of it
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-    // Create default window
-    m_defaultWindow = new GfxWindow();
-    m_defaultWindow->create();
+    // 4.1 max version supported by macOS
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
     return true;
 }
 
 void WindowManager::shutdown() {
     LOG_TRACE("Window manager shutting down");
-
-    m_defaultWindow->destroy();
-    delete m_defaultWindow;
 
     glfwTerminate();
 }
@@ -54,14 +46,6 @@ void WindowManager::pollEvents() {
 WindowManager& WindowManager::getInstance() {
     static WindowManager manager;
     return manager;
-}
-
-void* WindowManager::getNativeDisplayHandle() const {
-    return glfwGetX11Display();
-}
-
-GfxWindow* WindowManager::getDefaultWindow() {
-    return m_defaultWindow;
 }
 
 } // namespace rendering

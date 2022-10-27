@@ -30,9 +30,14 @@ public:
     virtual void destroy();
 
     /**
-     * Returns the native OS window handle
+     * Swaps buffers for this window
      */
-    void* getNativeHandle();
+    void swapBuffers();
+
+    /**
+     * Makes the window context current
+     */
+    void makeCurrent();
 
 protected:
     /**
