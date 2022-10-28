@@ -10,6 +10,7 @@
 
 #include <glm/glm.hpp>
 
+#include "UIElement.h"
 #include "vex/rendering/GfxWindow.h"
 #include "vex/ui/common/Color.h"
 
@@ -19,10 +20,10 @@ namespace ui {
 /**
  * @brief Window is used to define a GUI window
  */
-class Window final {
+class Window final : public UIElement {
 public:
     Window() = default;
-    ~Window() = default;
+    ~Window() override;
 
     /**
      * Sets the title of the window
@@ -30,10 +31,12 @@ public:
      */
     void setTitle(const std::string& title);
 
+    void update() override;
+
     /**
      * Renders the contents of this window
      */
-    void render();
+    void render() override;
 
     /**
      * Set the background color of the window
@@ -48,24 +51,18 @@ public:
     void setGfxWindow(rendering::GfxWindow* window);
 
     /**
-     * Set the size of the window
-     * @param size new size of the window
+     * Set the layout of the window
+     * @param layout new layout instance
      */
-    void setSize(const glm::vec2& size);
-
-private:
-    /**
-     * Updates the data of the GfxWindow
-     */
-    void updateGfxWindowData();
+    void setLayout(UIElement* layout);
 
 private:
     rendering::GfxWindow* m_gfx = nullptr;
-    bool m_requiresDataUpdate = false;
 
     std::string m_title;
     ui::Color m_bgColor {};
-    glm::vec2 m_size {50, 50};
+
+    ui::UIElement* m_layout = nullptr;
 };
 
 } // namespace ui

@@ -49,6 +49,7 @@ void GfxWindow::makeCurrent() {
 
 void GfxWindow::setSize(const glm::vec2& size) {
     glfwSetWindowSize(m_window, size.x, size.y);
+    glViewport(0, 0, size.x, size.y);
 }
 
 } // namespace rendering

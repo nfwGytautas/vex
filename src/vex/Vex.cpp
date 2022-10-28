@@ -9,7 +9,7 @@
 
 #include "vex/rendering/Renderer.h"
 #include "vex/rendering/WindowManager.h"
-#include "vex/ui/LayoutParser.h"
+#include "vex/ui/parsing/LayoutParser.h"
 #include "vex/utility/Logger.h"
 
 namespace vex {
@@ -96,6 +96,7 @@ void Vex::runApplication() {
         }
 
         if (m_app != nullptr) {
+            m_app->update();
             m_app->render();
 
             if (m_app->doesAppWantsToClose()) {

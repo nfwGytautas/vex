@@ -18,6 +18,12 @@ void Application::addWindow(vex::ui::Window* pWindow) {
     m_windows.push_back(pWindow);
 }
 
+void Application::update() {
+    for (Window* window : m_windows) {
+        window->update();
+    }
+}
+
 void Application::render() {
     for (Window* window : m_windows) {
         window->render();

@@ -6,6 +6,10 @@
 
 #pragma once
 
+#include <vector>
+
+#include "vex/ui/core/UIElement.h"
+
 namespace vex {
 namespace ui {
 namespace layout {
@@ -13,10 +17,22 @@ namespace layout {
 /**
  * @brief Base class for all layouts
  */
-class LayoutBase {
+class LayoutBase : public UIElement {
 public:
     LayoutBase() = default;
-    virtual ~LayoutBase() = default;
+    ~LayoutBase() override;
+
+    void update() override;
+    void render() override;
+
+    /**
+     * Add element to layout
+     * @param element Element object
+     */
+    void addElement(UIElement* element);
+
+protected:
+    std::vector<UIElement*> p_elements;
 
 private:
 };

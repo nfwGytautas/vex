@@ -6,8 +6,20 @@
 
 #include "FreeLayout.h"
 
+#include "vex/utility/Logger.h"
+
 namespace vex {
 namespace ui {
-namespace layout {} // namespace layout
+namespace layout {
+
+void FreeLayout::update() {
+    LayoutBase::update();
+}
+
+void FreeLayout::render() {
+    LayoutBase::render();
+}
+
+} // namespace layout
 } // namespace ui
 } // namespace vex

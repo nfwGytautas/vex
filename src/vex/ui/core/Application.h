@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <vector>
 
+#include "UIElement.h"
 #include "Window.h"
 
 namespace vex {
@@ -17,15 +18,13 @@ namespace ui {
 /**
  * @brief Application is the main class for vex UI
  */
-class Application final {
+class Application final : public UIElement {
 public:
     Application() = default;
     ~Application();
 
-    /**
-     * Render the application
-     */
-    void render();
+    void update() override;
+    void render() override;
 
     /**
      * Add a window to the application

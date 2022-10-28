@@ -18,7 +18,10 @@ namespace layout {
 class FreeLayout final : public LayoutBase {
 public:
     FreeLayout() = default;
-    ~FreeLayout() = default;
+    ~FreeLayout() override = default;
+
+    void update() override;
+    void render() override;
 
 private:
 };

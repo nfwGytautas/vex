@@ -32,33 +32,10 @@ public:
      * @param pApplication nullptr application object to store information in
      * @return true if parsed without errors, false otherwise
      */
-    bool parse(vex::ui::Application* pApplication);
-
-private:
-    /**
-     * Parses an xml file specified by the file parameter
-     * @param file File to parse
-     * @return True if the file has been parsed without errors, false otherwise
-     */
-    bool parseXmlFile(const std::filesystem::path& file);
-
-    /**
-     * Parses a <Application> node
-     * @param node Node to pasre
-     * @return True if the node has been parsed without error, false otherwise
-     */
-    bool parseApplicationNode(const XmlNode& node);
-
-    /**
-     * Parses a <Window> node
-     * @param node Node to parse
-     * @return Window object or nullptr if something failed
-     */
-    ui::Window* parseWindowNode(const XmlNode& node);
+    bool parse(vex::ui::Application*& pApplication);
 
 private:
     std::filesystem::path m_root;
-    ui::Application* m_app = nullptr;
 };
 
 } // namespace vex

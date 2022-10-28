@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vex/ui/elements/UIElement.h"
+#include "vex/ui/core/UIElement.h"
 
 namespace vex {
 namespace ui {
@@ -18,7 +18,10 @@ namespace elements {
 class Button final : public UIElement {
 public:
     Button() = default;
-    ~Button() = default;
+    ~Button();
+
+    void update() override;
+    void render() override;
 
 private:
 };
