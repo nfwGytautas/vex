@@ -36,11 +36,6 @@ public:
 
 private:
     /**
-     * Method invoked any time something failed (FATAL) in ui parsing
-     */
-    void onFail();
-
-    /**
      * Parses an xml file specified by the file parameter
      * @param file File to parse
      * @return True if the file has been parsed without errors, false otherwise

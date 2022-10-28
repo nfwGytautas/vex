@@ -9,9 +9,11 @@
 
 #include <pugixml/pugixml.hpp>
 
+#include "glm/vec2.hpp"
 #include "vex/Macros.h"
 #include "vex/ui/common/Color.h"
 #include "vex/utility/Logger.h"
+#include "vex/utility/Utility.h"
 
 namespace vex {
 
@@ -22,18 +24,13 @@ bool LayoutParser::parse(ui::Application* pApplication) {
     m_app = pApplication;
 
     if (!parseXmlFile(m_root / "Init.xml")) {
-        onFail();
+        return false;
     }
 
     return true;
 }
 
-void LayoutParser::onFail() {
-    delete m_app;
-}
 bool LayoutParser::parseXmlFile(const std::filesystem::path& file) {
-    LOG_TRACE("[LAYOUT PARSER] Parsing: {0}", file.c_str());
-
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file(file.c_str());
 
@@ -53,6 +50,8 @@ bool LayoutParser::parseXmlFile(const std::filesystem::path& file) {
 
         // TODO: Source location error
         // LOG_ERROR("Error offset: {0}" << result.offset << " (error at [..." << (source + result.offset) << "]\n\n";
+
+        return false;
     }
 
     return true;
@@ -74,13 +73,30 @@ ui::Window* LayoutParser::parseWindowNode(const LayoutParser::XmlNode& node) {
     // Attributes
     const auto& title = node.attribute("title");
     const auto& bgColor = node.attribute("bgColor");
+    const auto& size = node.attribute("size");
 
     if (!title.empty()) {
         window->setTitle(title.value());
     }
 
     if (!bgColor.empty()) {
-        window->setBackgroundColor(ui::Color::fromString(bgColor.value()));
+        ui::Color color {};
+
+        if (!ui::Color::fromString(bgColor.value(), color)) {
+            LOG_WARN("Invalid color string '{0}' at {1}", bgColor.value(), node.path());
+        } else {
+            window->setBackgroundColor(color);
+        }
+    }
+
+    if (!size.empty()) {
+        glm::vec2 sizeValue {};
+
+        if (!utility::Utility::stringToVec2(size.value(), sizeValue)) {
+            LOG_WARN("Invalid size string '{0}' at {1}", size.value(), node.path());
+        } else {
+            window->setSize(sizeValue);
+        }
     }
 
     return window;

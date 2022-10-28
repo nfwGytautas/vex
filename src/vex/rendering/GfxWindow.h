@@ -8,13 +8,15 @@
 
 #include <glfw/glfw3.h>
 
+#include "glm/vec2.hpp"
+
 namespace vex {
 namespace rendering {
 
 /**
  * @brief The implementation for window
  */
-class GfxWindow {
+class GfxWindow final {
 public:
     GfxWindow() = default;
     virtual ~GfxWindow() = default;
@@ -22,12 +24,12 @@ public:
     /**
      * Create the window objects
      */
-    virtual void create();
+    void create();
 
     /**
      * Destroy the window object
      */
-    virtual void destroy();
+    void destroy();
 
     /**
      * Swaps buffers for this window
@@ -39,7 +41,6 @@ public:
      */
     void makeCurrent();
 
-protected:
     /**
      * Returns true if the window is created, false otherwise
      */
@@ -50,6 +51,12 @@ protected:
      * @param title New title of the window
      */
     void setTitle(const char* title) const;
+
+    /**
+     * Set the size of the window
+     * @param size new size of the window
+     */
+    void setSize(const glm::vec2& size);
 
 private:
     GLFWwindow* m_window = nullptr;

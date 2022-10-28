@@ -47,5 +47,9 @@ void GfxWindow::makeCurrent() {
     glfwMakeContextCurrent(m_window);
 }
 
+void GfxWindow::setSize(const glm::vec2& size) {
+    glfwSetWindowSize(m_window, size.x, size.y);
+}
+
 } // namespace rendering
 } // namespace vex

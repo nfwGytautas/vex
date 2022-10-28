@@ -41,14 +41,8 @@ int Vex::start(int argc, char** argv) {
     // Start watching
     m_projectWatcher.watch();
 
-    m_app = new ui::Application(m_projectRoot);
-    m_app->load();
-
-    // Start the application
-    m_app->start();
-
-    // Free memory
-    delete m_app;
+    // Run application
+    runApplication();
 
     // Shutdown rendering
     shutdownRendering();
@@ -83,8 +77,70 @@ void Vex::shutdownRendering() {
 }
 void Vex::handleFileAction(efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action,
                            std::string oldFilename) {
+    if (filename[filename.size() - 1] == '~') {
+        return;
+    }
+
+    LOG_DEBUG("[Debug] Reloading");
+
     // Reload
-    m_app->markForReload();
+    m_appNeedsReload = true;
+}
+
+void Vex::runApplication() {
+    while (true) {
+        rendering::WindowManager::getInstance().pollEvents();
+
+        if (m_appNeedsReload) {
+            loadApplication();
+        }
+
+        if (m_app != nullptr) {
+            m_app->render();
+
+            if (m_app->doesAppWantsToClose()) {
+                break;
+            }
+        }
+
+        rendering::Renderer::getInstance().commit();
+    }
+
+    delete m_app;
+}
+
+void Vex::loadApplication() {
+    m_loadTimeout++;
+
+    if (m_loadTimeout >= ReloadTimeout) {
+        LOG_TRACE("Changes detected reloading application");
+        ui::Application* newApp = new ui::Application();
+
+        LayoutParser parser(m_projectRoot);
+        if (!parser.parse(newApp)) {
+            // Keep old application and delete the new
+            LOG_ERROR("Failed parsing the application, keeping old instance");
+            delete newApp;
+        } else {
+            LOG_TRACE("Switching application instance");
+
+            if (m_app != nullptr) {
+                m_app->shutdown();
+            }
+
+            newApp->initialize();
+
+            if (m_app != nullptr) {
+                m_app->shutdown();
+                delete m_app;
+            }
+
+            m_app = newApp;
+        }
+
+        m_loadTimeout = 0;
+        m_appNeedsReload = false;
+    }
 }
 
 } // namespace vex

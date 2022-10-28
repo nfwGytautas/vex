@@ -13,21 +13,24 @@
 namespace vex {
 namespace ui {
 
-Color Color::fromString(const char* colorString) {
-    Color c {};
-
+bool Color::fromString(const char* colorString, Color& out) {
+    out = {};
     std::string color(colorString);
 
     if (color.substr(0, 3) == "RGB") {
         auto values = utility::Utility::stringSplit(color.substr(4, color.length() - 5), ',');
 
-        c.R = std::stof(values[0]) / 255.0f;
-        c.G = std::stof(values[1]) / 255.0f;
-        c.B = std::stof(values[2]) / 255.0f;
-        c.A = 1.0f;
+        if (values.size() != 3) {
+            return false;
+        }
+
+        out.R = std::stof(values[0]) / 255.0f;
+        out.G = std::stof(values[1]) / 255.0f;
+        out.B = std::stof(values[2]) / 255.0f;
+        out.A = 1.0f;
     }
 
-    return c;
+    return true;
 }
 
 } // namespace ui

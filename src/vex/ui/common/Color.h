@@ -21,9 +21,10 @@ struct Color {
     /**
      * Parses a color from a string value
      * @param colorString String value
-     * @return Color data struct
+     * @param out Color object to store result in
+     * @return true if colorString is valid, false otherwise
      */
-    static Color fromString(const char* colorString);
+    static bool fromString(const char* colorString, Color& out);
 };
 
 } // namespace ui

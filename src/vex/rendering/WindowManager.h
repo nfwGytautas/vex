@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "GfxWindow.h"
 
 namespace vex {
@@ -41,7 +43,20 @@ public:
      */
     void pollEvents();
 
+    /**
+     * Creates a window or returns one from the window pool
+     * @return GfxWindow instance pointer
+     */
+    GfxWindow* createWindow();
+
+    /**
+     * Resets the window counter
+     */
+    void resetWindowCount();
+
 private:
+    std::vector<GfxWindow*> m_windowPool;
+    size_t m_numWindows = 0;
 };
 
 } // namespace rendering

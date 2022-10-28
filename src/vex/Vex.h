@@ -18,6 +18,11 @@ namespace vex {
  * @brief The entry point class for Vex
  */
 class Vex final : public efsw::FileWatchListener {
+    /**
+     * Time to wait before reloading the UI after a change (number of frames), this is to limit the creating and deleting of windows
+     */
+    static constexpr size_t ReloadTimeout = 60;
+
 public:
     Vex() = default;
     ~Vex() = default;
@@ -55,10 +60,23 @@ private:
     void handleFileAction(efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action,
                           std::string oldFilename) override;
 
+    /**
+     * Run the application instance
+     */
+    void runApplication();
+
+    /**
+     * Load application or keep previous instance if application cannot be parsed correctly
+     */
+    void loadApplication();
+
 private:
     std::filesystem::path m_projectRoot;
     ui::Application* m_app = nullptr;
     efsw::FileWatcher m_projectWatcher;
+
+    size_t m_loadTimeout = ReloadTimeout;
+    bool m_appNeedsReload = true;
 };
 
 } // namespace vex

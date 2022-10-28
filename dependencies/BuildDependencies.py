@@ -43,6 +43,12 @@ libraries = [
         "IncludeOutputOverride": "",
         "CmakeOptions": "-DBUILD_SHARED_LIBS=OFF"
     },
+    {
+        "Name": "glm",
+        "IncludeFiles": ["glm/**"],
+        "LibFiles": ["glm/libglm_static.a"],
+        "IncludeOutputOverride": "glm/",
+    },
 ]
 
 # Generate the output folders

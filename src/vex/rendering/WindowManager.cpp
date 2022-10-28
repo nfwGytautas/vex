@@ -36,6 +36,13 @@ bool WindowManager::initialize() {
 void WindowManager::shutdown() {
     LOG_TRACE("Window manager shutting down");
 
+    for (GfxWindow* instance : m_windowPool) {
+        instance->destroy();
+        delete instance;
+    }
+
+    m_windowPool.clear();
+
     glfwTerminate();
 }
 
@@ -46,6 +53,23 @@ void WindowManager::pollEvents() {
 WindowManager& WindowManager::getInstance() {
     static WindowManager manager;
     return manager;
+}
+
+GfxWindow* WindowManager::createWindow() {
+    if (m_numWindows >= m_windowPool.size()) {
+        GfxWindow* instance = new GfxWindow();
+        instance->create();
+        m_windowPool.push_back(instance);
+        m_numWindows++;
+        return instance;
+    } else {
+        // Return instance from pool
+        return m_windowPool[m_numWindows++];
+    }
+}
+
+void WindowManager::resetWindowCount() {
+    m_numWindows = 0;
 }
 
 } // namespace rendering
