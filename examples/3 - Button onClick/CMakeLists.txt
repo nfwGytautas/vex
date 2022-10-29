@@ -3,7 +3,7 @@ project(App)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src/)
+include_directories(../../vex/src/)
 
 file(GLOB_RECURSE CPP_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 

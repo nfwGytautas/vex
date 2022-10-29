@@ -8,7 +8,7 @@
                 Vex will search for the method called button_onClick in the code file
                 and call it when the button is clicked
                  -->
-                <Button size="(50, 10)" position="(225, 245)" onClick="button_onClick"/>
+                <Button size="(50, 10)" position="(225, 245)" onClick="button_onClick2"/>
                 <Button size="(50, 10)" position="(225, 150)"/>
             </FreeLayout>
         </Window>
