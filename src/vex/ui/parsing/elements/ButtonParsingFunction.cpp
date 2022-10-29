@@ -6,6 +6,7 @@
 
 #include "ButtonParsingFunction.h"
 
+#include "vex/binding/CodeLoader.h"
 #include "vex/ui/elements/Button.h"
 #include "vex/utility/Logger.h"
 #include "vex/utility/Utility.h"
@@ -28,6 +29,7 @@ bool ButtonParsingFunction::parse(const pugi::xml_node& node, UIElement*& out) {
 
     const auto& size = node.attribute("size");
     const auto& position = node.attribute("position");
+    const auto& onClick = node.attribute("onClick");
 
     if (!size.empty()) {
         glm::vec2 sizeValue {};
@@ -49,6 +51,10 @@ bool ButtonParsingFunction::parse(const pugi::xml_node& node, UIElement*& out) {
         } else {
             btn->setPosition(positionValue);
         }
+    }
+
+    if (!onClick.empty()) {
+        btn->setOnClick(binding::CodeLoader::getInstance().getButtonOnClickFunction(onClick.value()));
     }
 
     out = btn;

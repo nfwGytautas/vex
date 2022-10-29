@@ -41,11 +41,10 @@ unsigned int indices[] = {
     1, 2, 3  // second triangle
 };
 
-unsigned int VBO, VAO, EBO;
 unsigned int shaderProgram;
 
-void generate() {
-    if (generated) {
+void createShader() {
+    if (shaderProgram != 0) {
         return;
     }
 
@@ -84,6 +83,14 @@ void generate() {
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+}
+
+void Button::generate() {
+    createShader();
+
+    if (generated) {
+        return;
+    }
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -118,9 +125,6 @@ Button::~Button() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-    glDeleteProgram(shaderProgram);
-
-    generated = false;
 }
 
 void Button::update() {
@@ -157,6 +161,10 @@ void Button::update() {
     vertices[9] -= xOffset;
     vertices[10] += yOffset;
 
+    if (!generated && m_onClick) {
+        m_onClick(this);
+    }
+
     generate();
 }
 
@@ -165,6 +173,10 @@ void Button::render() {
     glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a
                             // bit more organized
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void Button::setOnClick(binding::ButtonOnClick callback) {
+    m_onClick = callback;
 }
 
 } // namespace elements

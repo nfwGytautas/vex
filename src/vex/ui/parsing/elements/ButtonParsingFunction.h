@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "vex/binding/FunctionTypes.h"
 #include "vex/ui/parsing/IParsingFunction.h"
 
 namespace vex {
@@ -29,6 +30,7 @@ public:
     bool parse(const pugi::xml_node& node, UIElement*& out) override;
 
 private:
+    binding::ButtonOnClick m_onClick = nullptr;
 };
 
 } // namespace parsers

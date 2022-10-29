@@ -7,7 +7,7 @@
                 <!--
                 Free layout doesn't constrain location and will keep it at the specified coordinates no matter the size
                  -->
-                <Button size="(495, 10)" position="(2, 240)"/>
+                <Button size="(495, 10)" position="(250, 250)"/>
             </FreeLayout>
         </Window>
     </Windows>

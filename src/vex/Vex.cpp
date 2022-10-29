@@ -7,6 +7,7 @@
 #include "Vex.h"
 #include <iostream>
 
+#include "vex/binding/CodeLoader.h"
 #include "vex/rendering/Renderer.h"
 #include "vex/rendering/WindowManager.h"
 #include "vex/ui/parsing/LayoutParser.h"
@@ -40,6 +41,8 @@ int Vex::start(int argc, char** argv) {
 
     // Start watching
     m_projectWatcher.watch();
+
+    binding::CodeLoader::getInstance().setProjectRoot(m_projectRoot);
 
     // Run application
     runApplication();
@@ -77,14 +80,24 @@ void Vex::shutdownRendering() {
 }
 void Vex::handleFileAction(efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action,
                            std::string oldFilename) {
+    if (m_appNeedsReload) {
+        // No need to flag since we already will reload
+        return;
+    }
+
     if (filename[filename.size() - 1] == '~') {
         return;
     }
 
-    LOG_DEBUG("[Debug] Reloading");
+    std::filesystem::path file(dir);
+    file /= filename;
 
-    // Reload
-    m_appNeedsReload = true;
+    if (file.extension() == ".xml" || file.extension() == ".so") {
+        LOG_DEBUG("[Debug] Reloading");
+
+        // Reload
+        m_appNeedsReload = true;
+    }
 }
 
 void Vex::runApplication() {
@@ -115,6 +128,12 @@ void Vex::loadApplication() {
 
     if (m_loadTimeout >= ReloadTimeout) {
         LOG_TRACE("Changes detected reloading application");
+
+        // Load code
+        if (!binding::CodeLoader::getInstance().load()) {
+            // TODO: Error handling
+        }
+
         ui::Application* newApp = new ui::Application();
 
         LayoutParser parser(m_projectRoot);

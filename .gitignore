@@ -2,6 +2,9 @@
 dependencies/include/
 dependencies/lib/
 
+# Examples
+build/
+
 # CLion
 .idea/
 cmake-build-debug/
