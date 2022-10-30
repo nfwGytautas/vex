@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Application>
+    <Windows>
+        <Window title="Window 1" bgColor="RGB(128, 0, 0)" size="(500, 500)">
+            <FreeLayout>
+                <!--
+                Vex will search for the method called button_onClick in the code file
+                and call it when the button is clicked
+                 -->
+                <Button size="(50, 10)" position="(225, 245)" onClick="button_onClick2"/>
+                <Button size="(50, 10)" position="(225, 150)"/>
+            </FreeLayout>
+        </Window>
+    </Windows>
+</Application>

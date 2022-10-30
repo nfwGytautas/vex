@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Application>
+    <Windows>
+        <Window title="Window 1" bgColor="RGB(128, 0, 0)" size="(500, 500)">
+            <FreeLayout>
+                <!--
+                Free layout doesn't constrain location and will keep it at the specified coordinates no matter the size
+                 -->
+                <Button size="(495, 10)" position="(250, 250)"/>
+            </FreeLayout>
+        </Window>
+    </Windows>
+</Application>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Application is the root node for all vex projects -->
+<Application>
+    <!-- Application node is the node where you define templates, windows -->
+    <!-- You can either use a template window, an inline window or import a xml ui -->
+    <Windows>
+        <!-- Here we use inline window syntax -->
+        <Window title="Example window">
+            <!-- A window HAS to have a ui element, here we use a free ui -->
+            <FreeLayout>
+            </FreeLayout>
+        </Window>
+    </Windows>
+</Application>
